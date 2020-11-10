@@ -112,7 +112,7 @@ async function redPacket() {
 //获取任务列表
 function taskHomePage() {
   return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), {"clientInfo":{}}), (err, resp, data) => {
+    $.post(taskUrl('taskHomePage', {"clientInfo":{}}), (err, resp, data) => {
       try {
         if (err) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
@@ -133,7 +133,7 @@ function startTask(taskType) {
   // 从taskHomePage返回的数据里面拿taskType
   const data = {"clientInfo":{}, taskType};
   return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
+    $.post(taskUrl('startTask', data), (err, resp, data) => {
       try {
         if (err) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
@@ -176,7 +176,7 @@ async function active(taskType) {
 function getTaskDetailForColor(taskType) {
   const data = {"clientInfo":{}, taskType};
   return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
+    $.post(taskUrl('getTaskDetailForColor', data), (err, resp, data) => {
       try {
         if (err) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
@@ -197,7 +197,7 @@ function taskReportForColor(taskType, detailId) {
   const data = {"clientInfo":{}, taskType, detailId};
   //console.log(`活动id：：：${detailId}\n`)
   return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
+    $.post(taskUrl('taskReportForColor', data), (err, resp, data) => {
       try {
         if (err) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
@@ -217,7 +217,7 @@ function taskReportForColor(taskType, detailId) {
 function receiveTaskRedpacket(taskType) {
   const body = {"clientInfo":{}, taskType};
   return new Promise((resolve) => {
-    $.post(taskUrl(arguments.callee.name.toString(), body), (err, resp, data) => {
+    $.post(taskUrl('receiveTaskRedpacket', body), (err, resp, data) => {
       try {
         if (err) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
