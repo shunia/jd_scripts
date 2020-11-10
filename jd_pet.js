@@ -121,8 +121,7 @@ async function jdPet() {
 // 收取所有好感度
 async function energyCollect() {
   console.log('开始收取任务奖励好感度');
-  let function_id = arguments.callee.name.toString();
-  const response = await request(function_id);
+  const response = await request('energyCollect');
   // console.log(`收取任务奖励好感度完成:${JSON.stringify(response)}`);
   if (response.code === '0') {
     message += `【第${response.result.medalNum + 1}块勋章完成进度】${response.result.medalPercent}%，还需收集${response.result.needCollectEnergy}好感\n`;
@@ -209,7 +208,7 @@ async function doTask() {
 }
 // 好友助力信息
 async function masterHelpInit() {
-  let res = await request(arguments.callee.name.toString());
+  let res = await request('masterHelpInit');
   // console.log(`助力信息: ${JSON.stringify(res)}`);
   if (res.code === '0' && res.resultCode === '0') {
     if (res.result.masterHelpPeoples && res.result.masterHelpPeoples.length >= 5) {
@@ -250,7 +249,7 @@ async function slaveHelp() {
   for (let code of newShareCodes) {
     console.log(`开始助力京东账号${$.index} - ${$.nickName}的好友: ${code}`);
     if (!code) continue;
-    let response = await request(arguments.callee.name.toString(), {'shareCode': code});
+    let response = await request('slaveHelp', {'shareCode': code});
     if (response.code === '0' && response.resultCode === '0') {
       if (response.result.helpStatus === 0) {
         console.log('已给好友: 【' + response.result.masterNickName + '】助力');
@@ -280,7 +279,7 @@ async function petSport() {
   const code = 0
   let resultCode = 0
   do {
-    let response = await request(arguments.callee.name.toString())
+    let response = await request('petSport')
     console.log(`第${times}次遛狗完成: ${JSON.stringify(response)}`);
     resultCode = response.resultCode;
     if (resultCode == 0) {
@@ -296,7 +295,7 @@ async function petSport() {
 // 初始化任务, 可查询任务完成情况
 async function taskInit() {
   console.log('开始任务初始化');
-  $.taskInit = await request(arguments.callee.name.toString(), {"version":1});
+  $.taskInit = await request('taskInit', {"version":1});
 }
 // 每日签到, 每天一次
 async function signInitFun() {

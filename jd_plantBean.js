@@ -404,12 +404,11 @@ async function getReward() {
 }
 //收取营养液
 async function cultureBean(currentRoundId, nutrientsType) {
-  let functionId = arguments.callee.name.toString();
   let body = {
     "roundId": currentRoundId,
     "nutrientsType": nutrientsType,
   }
-  $.cultureBeanRes = await request(functionId, body);
+  $.cultureBeanRes = await request('cultureBean', body);
 }
 //偷营养液大于等于3瓶的好友
 //①查询好友列表
@@ -424,12 +423,11 @@ async function stealFriendList() {
 async function collectUserNutr(paradiseUuid) {
   console.log('开始偷好友');
   // console.log(paradiseUuid);
-  let functionId = arguments.callee.name.toString();
   const body = {
     "paradiseUuid": paradiseUuid,
     "roundId": currentRoundId
   }
-  $.stealFriendRes = await request(functionId, body);
+  $.stealFriendRes = await request('collectUserNutr', body);
 }
 async function receiveNutrients() {
   $.receiveNutrientsRes = await request('receiveNutrients', {"roundId": currentRoundId, "monitor_refer": "plant_receiveNutrients"})
@@ -443,26 +441,22 @@ async function egg() {
   $.plantEggLotteryRes = await requestGet('plantEggLotteryIndex');
 }
 async function productTaskList() {
-  let functionId = arguments.callee.name.toString();
-  $.productTaskList = await requestGet(functionId, {"monitor_refer": "plant_productTaskList"});
+  $.productTaskList = await requestGet('productTaskList', {"monitor_refer": "plant_productTaskList"});
 }
 async function plantChannelTaskList() {
-  let functionId = arguments.callee.name.toString();
-  $.plantChannelTaskList = await requestGet(functionId);
+  $.plantChannelTaskList = await requestGet('plantChannelTaskList');
   // console.log('$.plantChannelTaskList', $.plantChannelTaskList)
 }
 async function shopTaskList() {
-  let functionId = arguments.callee.name.toString();
-  $.shopTaskListRes = await requestGet(functionId, {"monitor_refer": "plant_receiveNutrients"});
+  $.shopTaskListRes = await requestGet('shopTaskList', {"monitor_refer": "plant_receiveNutrients"});
   // console.log('$.shopTaskListRes', $.shopTaskListRes)
 }
 async function receiveNutrientsTask(awardType) {
-  const functionId = arguments.callee.name.toString();
   const body = {
     "monitor_refer": "receiveNutrientsTask",
     "awardType": `${awardType}`,
   }
-  $.receiveNutrientsTaskRes = await requestGet(functionId, body);
+  $.receiveNutrientsTaskRes = await requestGet('receiveNutrientsTask', body);
 }
 async function plantShareSupportList() {
   $.shareSupportList = await requestGet('plantShareSupportList', {"roundId": ""});
