@@ -292,7 +292,7 @@ async function getFirstWaterAward() {
   await taskInitForFarm();
   //领取首次浇水奖励
   if (!$.farmTask.firstWaterInit.f && $.farmTask.firstWaterInit.totalWaterTimes > 0) {
-    await firstWaterTaskForFarm();
+    await firstWaterTaskForFarm('getFirstWaterAward');
     if ($.firstWaterReward.code === '0') {
       console.log(`【首次浇水奖励】获得${$.firstWaterReward.amount}g💧\n`);
       // message += `【首次浇水奖励】获得${$.firstWaterReward.amount}g💧\n`;
@@ -308,7 +308,7 @@ async function getFirstWaterAward() {
 async function getTenWaterAward() {
   //领取10次浇水奖励
   if (!$.farmTask.totalWaterTaskInit.f && $.farmTask.totalWaterTaskInit.totalWaterTaskTimes >= $.farmTask.totalWaterTaskInit.totalWaterTaskLimit) {
-    await totalWaterTaskForFarm();
+    await totalWaterTaskForFarm('getTenWaterAward');
     if ($.totalWaterReward.code === '0') {
       console.log(`【十次浇水奖励】获得${$.totalWaterReward.totalWaterTaskEnergy}g💧\n`);
       // message += `【十次浇水奖励】获得${$.totalWaterReward.totalWaterTaskEnergy}g💧\n`;
@@ -328,7 +328,7 @@ async function doTenWaterAgain() {
   await initForFarm();
   let totalEnergy  = $.farmInfo.farmUserPro.totalEnergy;
   console.log(`剩余水滴${totalEnergy}g\n`);
-  await myCardInfoForFarm();
+  await myCardInfoForFarm('doTenWaterAgain');
   const { fastCard, doubleCard, beanCard, signCard  } = $.myCardInfoRes;
   console.log(`背包已有道具:\n快速浇水卡:${fastCard === -1 ? '未解锁': fastCard + '张'}\n水滴翻倍卡:${doubleCard === -1 ? '未解锁': doubleCard + '张'}\n水滴换京豆卡:${beanCard === -1 ? '未解锁' : beanCard + '张'}\n加签卡:${signCard === -1 ? '未解锁' : signCard + '张'}\n`)
   if (totalEnergy >= 100 && $.myCardInfoRes.doubleCard > 0) {
@@ -839,7 +839,7 @@ async function getWaterFriendGotAward() {
   const { waterFriendCountKey, waterFriendMax, waterFriendSendWater, waterFriendGotAward } = $.farmTask.waterFriendTaskInit
   if (waterFriendCountKey >= waterFriendMax) {
     if (!waterFriendGotAward) {
-      await waterFriendGotAwardForFarm();
+      await waterFriendGotAwardForFarm('getWaterFriendGotAward');
       console.log(`领取给${waterFriendMax}个好友浇水后的奖励水滴::${JSON.stringify($.waterFriendGotAwardRes)}`)
       if ($.waterFriendGotAwardRes.code === '0') {
         // message += `【给${waterFriendMax}好友浇水】奖励${$.waterFriendGotAwardRes.addWater}g水滴\n`;
@@ -931,28 +931,23 @@ async function getFullCollectionReward() {
  * 领取10次浇水奖励API
  */
 async function totalWaterTaskForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.totalWaterReward = await request(functionId);
+  $.totalWaterReward = await request('totalWaterTaskForFarm');
 }
 //领取首次浇水奖励API
 async function firstWaterTaskForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.firstWaterReward = await request(functionId);
+  $.firstWaterReward = await request('firstWaterTaskForFarm');
 }
 //领取给3个好友浇水后的奖励水滴API
 async function waterFriendGotAwardForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.waterFriendGotAwardRes = await request(functionId, {"version": 4, "channel": 1});
+  $.waterFriendGotAwardRes = await request('waterFriendGotAwardForFarm', {"version": 4, "channel": 1});
 }
 // 查询背包道具卡API
 async function myCardInfoForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.myCardInfoRes = await request(functionId, {"version": 5, "channel": 1});
+  $.myCardInfoRes = await request('myCardInfoForFarm', {"version": 5, "channel": 1});
 }
 //使用道具卡API
 async function userMyCardForFarm(cardType) {
-  const functionId = arguments.callee.name.toString();
-  $.userMyCardRes = await request(functionId, {"cardType": cardType});
+  $.userMyCardRes = await request('userMyCardForFarm', {"cardType": cardType});
 }
 /**
  * 领取浇水过程中的阶段性奖励
@@ -960,25 +955,24 @@ async function userMyCardForFarm(cardType) {
  * @returns {Promise<void>}
  */
 async function gotStageAwardForFarm(type) {
-  $.gotStageAwardForFarmRes = await request(arguments.callee.name.toString(), {'type': type});
+  $.gotStageAwardForFarmRes = await request('gotStageAwardForFarm', {'type': type});
 }
 //浇水API
 async function waterGoodForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.waterResult = await request(functionId);
+  $.waterResult = await request('waterGoodForFarm');
 }
 // 初始化集卡抽奖活动数据API
 async function initForTurntableFarm() {
-  $.initForTurntableFarmRes = await request(arguments.callee.name.toString(), {version: 4, channel: 1});
+  $.initForTurntableFarmRes = await request('initForTurntableFarm', {version: 4, channel: 1});
 }
 async function lotteryForTurntableFarm() {
   await $.wait(2000);
   console.log('等待了5秒')
-  $.lotteryRes = await request(arguments.callee.name.toString(), {type: 1, version: 4, channel: 1});
+  $.lotteryRes = await request('lotteryForTurntableFarm', {type: 1, version: 4, channel: 1});
 }
 
 async function timingAwardForTurntableFarm() {
-  $.timingAwardRes = await request(arguments.callee.name.toString(), {version: 4, channel: 1});
+  $.timingAwardRes = await request('timingAwardForTurntableFarm', {version: 4, channel: 1});
 }
 
 async function browserForTurntableFarm(type, adId) {
@@ -989,7 +983,7 @@ async function browserForTurntableFarm(type, adId) {
     console.log('天天抽奖浏览任务领取水滴');
   }
   const body = {"type": type,"adId": adId,"version":4,"channel":1};
-  $.browserForTurntableFarmRes = await request(arguments.callee.name.toString(), body);
+  $.browserForTurntableFarmRes = await request('browserForTurntableFarm', body);
   // 浏览爆品会场8秒
 }
 //天天抽奖浏览任务领取水滴API
@@ -1000,11 +994,11 @@ async function browserForTurntableFarm2(type) {
 /**
  * 天天抽奖拿好礼-助力API(每人每天三次助力机会)
  */
-async function lotteryMasterHelp() {
+async function lotteryMasterHelp(code) {
   $.lotteryMasterHelpRes = await request(`initForFarm`, {
     imageUrl: "",
     nickName: "",
-    shareCode: arguments[0] + '-3',
+    shareCode: code + '-3',
     babelChannel: "3",
     version: 4,
     channel: 1
@@ -1013,30 +1007,28 @@ async function lotteryMasterHelp() {
 
 //领取5人助力后的额外奖励API
 async function masterGotFinishedTaskForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.masterGotFinished = await request(functionId);
+  $.masterGotFinished = await request('masterGotFinishedTaskForFarm');
 }
 //助力好友信息API
 async function masterHelpTaskInitForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.masterHelpResult = await request(functionId);
+  $.masterHelpResult = await request('masterHelpTaskInitForFarm');
 }
 //接受对方邀请,成为对方好友的API
-async function inviteFriend() {
+async function inviteFriend(code) {
   $.inviteFriendRes = await request(`initForFarm`, {
     imageUrl: "",
     nickName: "",
-    shareCode: arguments[0] + '-inviteFriend',
+    shareCode: code + '-inviteFriend',
     version: 4,
     channel: 2
   });
 }
 // 助力好友API
-async function masterHelp() {
+async function masterHelp(code) {
   $.helpResult = await request(`initForFarm`, {
     imageUrl: "",
     nickName: "",
-    shareCode: arguments[0],
+    shareCode: code,
     babelChannel: "3",
     version: 2,
     channel: 1
@@ -1046,27 +1038,23 @@ async function masterHelp() {
  * 水滴雨API
  */
 async function waterRainForFarm() {
-  const functionId = arguments.callee.name.toString();
   const body = {"type": 1, "hongBaoTimes": 100, "version": 3};
-  $.waterRain = await request(functionId, body);
+  $.waterRain = await request('waterRainForFarm', body);
 }
 /**
  * 打卡领水API
  */
 async function clockInInitForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.clockInInit = await request(functionId);
+  $.clockInInit = await request('clockInInitForFarm');
 }
 
 // 连续签到API
 async function clockInForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.clockInForFarmRes = await request(functionId, {"type": 1});
+  $.clockInForFarmRes = await request('clockInForFarm', {"type": 1});
 }
 
 //关注，领券等API
 async function clockInFollowForFarm(id, type, step) {
-  const functionId = arguments.callee.name.toString();
   let body = {
     id,
     type,
@@ -1074,15 +1062,15 @@ async function clockInFollowForFarm(id, type, step) {
   }
   if (type === 'theme') {
     if (step === '1') {
-      $.themeStep1 = await request(functionId, body);
+      $.themeStep1 = await request('clockInFollowForFarm', body);
     } else if (step === '2') {
-      $.themeStep2 = await request(functionId, body);
+      $.themeStep2 = await request('clockInFollowForFarm', body);
     }
   } else if (type === 'venderCoupon') {
     if (step === '1') {
-      $.venderCouponStep1 = await request(functionId, body);
+      $.venderCouponStep1 = await request('clockInFollowForFarm', body);
     } else if (step === '2') {
-      $.venderCouponStep2 = await request(functionId, body);
+      $.venderCouponStep2 = await request('clockInFollowForFarm', body);
     }
   }
 }
@@ -1094,8 +1082,7 @@ async function gotClockInGift() {
 
 //定时领水API
 async function gotThreeMealForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.threeMeal = await request(functionId);
+  $.threeMeal = await request('gotThreeMealForFarm');
 }
 /**
  * 浏览广告任务API
@@ -1103,21 +1090,19 @@ async function gotThreeMealForFarm() {
  * type为1时, 领取浏览任务奖励
  */
 async function browseAdTaskForFarm(advertId, type) {
-  const functionId = arguments.callee.name.toString();
   if (type === 0) {
-    $.browseResult = await request(functionId, {advertId, type});
+    $.browseResult = await request('browseAdTaskForFarm', {advertId, type});
   } else if (type === 1) {
-    $.browseRwardResult = await request(functionId, {advertId, type});
+    $.browseRwardResult = await request('browseAdTaskForFarm', {advertId, type});
   }
 }
 // 被水滴砸中API
 async function gotWaterGoalTaskForFarm() {
-  $.goalResult = await request(arguments.callee.name.toString(), {type: 3});
+  $.goalResult = await request('gotWaterGoalTaskForFarm', {type: 3});
 }
 //签到API
 async function signForFarm() {
-  const functionId = arguments.callee.name.toString();
-  $.signResult = await request(functionId);
+  $.signResult = await request('signForFarm');
 }
 /**
  * 初始化农场, 可获取果树及用户信息API
@@ -1166,8 +1151,7 @@ async function initForFarm() {
 // 初始化任务列表API
 async function taskInitForFarm() {
   console.log('\n初始化任务列表')
-  const functionId = arguments.callee.name.toString();
-  $.farmTask = await request(functionId);
+  $.farmTask = await request('taskInitForFarm');
 }
 //获取好友列表API
 async function friendListInitForFarm() {
