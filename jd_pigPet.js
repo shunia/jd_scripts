@@ -42,11 +42,6 @@ if ($.isNode()) {
         }
         continue
       }
-      message = '';
-      subTitle = '';
-      goodsUrl = '';
-      taskInfoKey = [];
-      option = {};
       await jdPigPet();
     }
   }
